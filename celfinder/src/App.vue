@@ -44,9 +44,19 @@
         </div>
 
         <div class="column">
+         <!-- <form action="http://localhost:3000/service-order/find/all" method="get">
+
+
+
+            <button class="button is-warning" type="submit">Atualizar</button>
+
+              
+
+          </form>-->
           <section class="hero is-primary" :key="item.id" v-for="(item, index) in ticket">
             <div class="hero-body">
               <div class="container">
+                
                 <h1 class="title">{{ item.title }}</h1>
 
                 <span class="tag is-warning">{{ item.city}}</span>
@@ -65,6 +75,14 @@
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
+const axios = require("axios");
+
+axios.get("http://localhost:3000/service-order/find/all").then(response =>{
+
+
+console.log(response)
+
+});
 
 export default {
   data() {
