@@ -2,9 +2,11 @@
   <div id="app">
     <div class="container">
       <div class="columns">
-        <div class="column">
+        <div class="column is-two-half">
+          <h1 class="title has-text-dark">Abrir um novo chamado</h1>
+
           <div class="field">
-            <label class="label">Novo chamado</label>
+            <label class="label">Titulo</label>
             <div class="control">
               <input v-model="title" class="input is-primary" type="text" placeholder="Titulo" />
             </div>
@@ -35,7 +37,7 @@
           <label class="label">Confirmar</label>
           <div class="field is-grouped">
             <div class="control">
-              <button @click="addNote" class="button is-link is-success">Adicionar</button>
+              <button @click="addNote()" class="button is-link is-success">Adicionar</button>
             </div>
             <div class="control">
               <button class="button is-link is-danger">Cancelar</button>
@@ -44,39 +46,36 @@
         </div>
 
         <div class="column">
-         <div>
-           <section class="hero is-primary" :key="item.id" v-for="item in ticket">
-            <div class="hero-body">
-              <div class="container">
-                
-                <h1 class="title">{{ item.titulo}}</h1>
+          <h1 class="title">Chamados em aberto</h1>
+          <div class="container">
+            <div class="card" :key="item.id" v-for="item in ticket">
+              <header class="card-header has-background-dark">
+                <p class="card-header-title has-text-white">{{ item.titulo }}</p>
+                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  <div class="sutitle"><strong>{{item.responsavel}} </strong></div>
+                  
+                    <div class="tag is-success">{{item.cidade}}</div>
+                  
 
-                <span class="tag is-warning">{{item.cidade}}</span>
-
-                <h2 class="subtitle">{{item.responsavel}}</h2>
-
-                <a href="#" @click="removeTicket(index)">Excluir</a>
+                  <br/>
+                  <time datetime="2016-1-1">{{item.data}}</time>
+                </div>
               </div>
+              <footer class="card-footer">
+                <a href="#" class="card-footer-item has-text-black">Concluido</a>
+                <a href="#" class="card-footer-item has-text-black">Arquivar</a>
+                <a href="#" class="card-footer-item has-text-black">Deletar</a>
+              </footer>
             </div>
-          </section>
-        
-
-
-         </div>
-          <!--<section class="hero is-primary" :key="item.id" v-for="(item, index) in ticket">
-            <div class="hero-body">
-              <div class="container">
-                
-                <h1 class="title">{{ item.title }}</h1>
-
-                <span class="tag is-warning">{{ item.city}}</span>
-
-                <h2 class="subtitle">{{item.responsible}}</h2>
-
-                <a href="#" @click="removeTicket(index)">Excluir</a>
-              </div>
-            </div>
-          </section>-->
+            <br />
+          </div>
         </div>
       </div>
     </div>
@@ -107,14 +106,23 @@ export default {
     };
 
   },
-  
-  mounted () {
-    axios
-      .get('http://localhost:3000/service-order/find/all')
-      .then(response => (this.ticket = response.data))},
 
+  mounted() {
+    axios
+      .get("http://localhost:3000/service-order/find/all")
+      .then(response => (this.ticket = response.data));
+  },
   methods: {
     addNote() {
+      axios
+        .post("http://localhost:3000/service-order/insert", {
+          body: this.ticket
+        })
+        .then(response => {})
+        .catch(e => {
+          this.errors.push(e);
+        });
+
       console.log("Nova nota adicionada...");
       console.log(this.title);
       console.log(this.city);
@@ -139,5 +147,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin-top: 60px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 </style>
