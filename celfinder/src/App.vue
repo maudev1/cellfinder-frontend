@@ -44,16 +44,26 @@
         </div>
 
         <div class="column">
-         <!-- <form action="http://localhost:3000/service-order/find/all" method="get">
+         <div>
+           <section class="hero is-primary" :key="item.id" v-for="item in ticket">
+            <div class="hero-body">
+              <div class="container">
+                
+                <h1 class="title">{{ item.titulo}}</h1>
+
+                <span class="tag is-warning">{{item.cidade}}</span>
+
+                <h2 class="subtitle">{{item.responsavel}}</h2>
+
+                <a href="#" @click="removeTicket(index)">Excluir</a>
+              </div>
+            </div>
+          </section>
+        
 
 
-
-            <button class="button is-warning" type="submit">Atualizar</button>
-
-              
-
-          </form>-->
-          <section class="hero is-primary" :key="item.id" v-for="(item, index) in ticket">
+         </div>
+          <!--<section class="hero is-primary" :key="item.id" v-for="(item, index) in ticket">
             <div class="hero-body">
               <div class="container">
                 
@@ -66,7 +76,7 @@
                 <a href="#" @click="removeTicket(index)">Excluir</a>
               </div>
             </div>
-          </section>
+          </section>-->
         </div>
       </div>
     </div>
@@ -77,12 +87,12 @@
 //import HelloWorld from './components/HelloWorld.vue'
 const axios = require("axios");
 
-axios.get("http://localhost:3000/service-order/find/all").then(response =>{
-
-
-console.log(response)
-
-});
+//axios.get("http://localhost:3000/service-order/find/all")
+//let lista = []
+//  .then(this.lista = response =>{
+//
+//    console.log(lista)
+//});
 
 export default {
   data() {
@@ -92,9 +102,17 @@ export default {
       city: "",
       responsible: "",
       responsibles: ["ALT", "FiberFort", "Daniel Fibra"],
-      cities: ["Alumínio", "Cotia", "São Roque", "Itapevi", "Vargem Grande"]
+      cities: ["Alumínio", "Cotia", "São Roque", "Itapevi", "Vargem Grande"],
+
     };
+
   },
+  
+  mounted () {
+    axios
+      .get('http://localhost:3000/service-order/find/all')
+      .then(response => (this.ticket = response.data))},
+
   methods: {
     addNote() {
       console.log("Nova nota adicionada...");
